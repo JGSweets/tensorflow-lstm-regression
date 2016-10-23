@@ -34,6 +34,14 @@ RUN echo deb http://archive.ubuntu.com/ubuntu trusty universe multiverse >> /etc
     postgresql-client \
     supervisor \
     wget \
+    python-numpy \
+    python-scipy \
+    python-matplotlib \
+    ipython \
+    ipython-notebook \
+    python-pandas \
+    python-sympy \
+    python-nose \
     unzip; \
     apt-get clean
 
@@ -88,3 +96,5 @@ RUN apt-get autoremove -y; apt-get clean -y
 # use the project as the work dir
 ADD . /opt/app
 WORKDIR /opt/app
+
+RUN pip install -r requirements.txt
