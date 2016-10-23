@@ -13,40 +13,45 @@ ENV LC_ALL en_US.UTF-8
 # remove several traces of python
 RUN apt-get purge -y python.*
 
-# Add the following two dependencies if you want to use --enable-gnutls in FFPMEG: gnutls-bin
-RUN echo deb http://archive.ubuntu.com/ubuntu trusty universe multiverse >> /etc/apt/sources.list; \
-    apt-get update -qq && apt-get install -y --force-yes \
-    ant \
-    autoconf \
-    automake \
-    build-essential \
-    curl \
-    checkinstall \
-    cmake \
-    f2c \
-    gfortran \
-    git \
-    g++ \
-    gfortran \
-    libffi6 \
-    openssl \
-    pkg-config \
-    postgresql-client \
-    supervisor \
-    wget \
-    python-numpy \
-    python-scipy \
-    python-matplotlib \
-    ipython \
-    ipython-notebook \
-    python-pandas \
-    python-sympy \
-    python-nose \
-    unzip; \
-    apt-get clean
-
 # gpg: key 18ADD4FF.
 ENV GPG_KEY C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF
+
+RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty main' >/etc/apt/sources.list
+RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty-security main' >>/etc/apt/sources.list
+RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty-updates main' >>/etc/apt/sources.list
+RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty universe' >>/etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y --force-yes autoconf \
+automake \
+build-essential \
+curl \
+checkinstall \
+cmake \
+f2c \
+gfortran \
+git \
+g++ \
+gfortran \
+libffi6 \
+openssl \
+libssl-dev \
+pkg-config \
+postgresql-client \
+supervisor \
+wget \
+python-numpy \
+python-scipy \
+python-matplotlib \
+ipython \
+ipython-notebook \
+python-pandas \
+python-sympy \
+python-nose \
+zlib1g-dev \
+xz-utils \
+unzip    
+
+RUN apt-get clean
 
 RUN set -ex \
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
@@ -69,32 +74,13 @@ RUN set -ex \
 		-exec rm -rf '{}' + \
 	&& rm -rf /usr/src/python
 
-# install "virtualenv", since the vast majority of users of this image will want it
-RUN pip install --no-cache-dir virtualenv
-
-WORKDIR /usr/local/src
-
-RUN curl -Os https://www.tortall.net/projects/yasm/releases/yasm-${YASM_VERSION}.tar.gz \
-    && tar xzvf yasm-${YASM_VERSION}.tar.gz
-
-
-# Build YASM
-# =================================
-WORKDIR /usr/local/src/yasm-${YASM_VERSION}
-RUN ./configure \
-    && make -j ${NUM_CORES} \
-    && make install
-# =================================
-
-# Remove all tmpfile and cleanup
-# =================================
-WORKDIR /usr/local/
-RUN rm -rf /usr/local/src
-RUN apt-get autoremove -y; apt-get clean -y
-# =================================
-
 # use the project as the work dir
 ADD . /opt/app
 WORKDIR /opt/app
 
 RUN pip install -r requirements.txt
+
+EXPOSE 8888
+
+USER root
+CMD jupyter notebook --no-browser --ip=0.0.0.0
