@@ -31,10 +31,14 @@ f2c \
 gfortran \
 git \
 g++ \
+libsqlite3-dev \
 gfortran \
 libffi6 \
+python-matplotlib \
+libfreetype6-dev \
 openssl \
 libssl-dev \
+libbz2-dev \
 pkg-config \
 postgresql-client \
 supervisor \
@@ -77,6 +81,10 @@ RUN set -ex \
 # use the project as the work dir
 ADD . /opt/app
 WORKDIR /opt/app
+
+
+RUN pip install --upgrade pip
+RUN pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0-cp27-none-linux_x86_64.whl
 
 RUN pip install -r requirements.txt
 
