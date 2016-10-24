@@ -9,3 +9,5 @@ The objective is to predict continuous values, sin and cos functions in this exa
 ```
 18:45:15 ~/data/github/claytantor/tensorflow-lstm-regression {master} $ docker build .
 ```
+
+docker run -d -p 8888:8888 claytantor/tensorflow-lstm-regression:latest 
