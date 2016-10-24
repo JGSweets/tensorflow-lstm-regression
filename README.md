@@ -31,7 +31,7 @@ Three Jupyter notebooks are provided as examples on how to use lstm for predicti
 ```
 
 ## Docker container
-This project is also available as a fully configured docker container. It is possible to build it a docker container using the [Dockerfile][./Dockerfile] You can download and run it from docker hub at the project page: [claytantor/tensorflow-lstm-regression](https://hub.docker.com/r/claytantor/tensorflow-lstm-regression/~/dockerfile/)
+This project is also available as a fully configured docker container. It is possible to build it a docker container using the [Dockerfile](./Dockerfile) You can download and run it from docker hub at the project page: [claytantor/tensorflow-lstm-regression](https://hub.docker.com/r/claytantor/tensorflow-lstm-regression/~/dockerfile/)
 
 ## Other Reading
 For more details please look at this blog post [Sequence prediction using recurrent neural networks(LSTM) with TensorFlow](http://mourafiq.com/2016/05/15/predicting-sequences-using-rnn-in-tensorflow.html)
