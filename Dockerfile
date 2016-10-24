@@ -2,8 +2,6 @@ FROM ubuntu:trusty
 
 ENV PYTHON_VERSION 2.7.11
 ENV PYTHON_PIP_VERSION 8.0.2
-ENV YASM_VERSION    1.3.0
-ENV NUM_CORES 4
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -53,7 +51,7 @@ python-sympy \
 python-nose \
 zlib1g-dev \
 xz-utils \
-unzip    
+unzip
 
 RUN apt-get clean
 
@@ -82,13 +80,15 @@ RUN set -ex \
 ADD . /opt/app
 WORKDIR /opt/app
 
-
+# install tensorflow 0.10 from whl file
 RUN pip install --upgrade pip
 RUN pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0-cp27-none-linux_x86_64.whl
 
+# now install the remaining requirements with pip
 RUN pip install -r requirements.txt
 
 EXPOSE 8888
 
+# startup jupyter
 USER root
 CMD jupyter notebook --no-browser --ip=0.0.0.0
